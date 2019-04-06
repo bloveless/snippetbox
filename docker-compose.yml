@@ -1,0 +1,41 @@
+version: '3.7'
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: build/docker/server/Dockerfile
+      target: builder
+    environment:
+      MYSQL_HOST: "db"
+      MYSQL_DATABASE: "snippetbox"
+      MYSQL_USER: "snippetbox"
+      MYSQL_PASSWORD: "2i2XfaLV4u!P1nadznz"
+    ports:
+      - 4000:4000
+    volumes:
+      - .:/home/appuser/app
+    networks:
+      - snippetbox
+    depends_on:
+      - db
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: "snippetbox"
+      MYSQL_USER: "snippetbox"
+      MYSQL_PASSWORD: "2i2XfaLV4u!P1nadznz"
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./build/docker/mysql/init:/docker-entrypoint-initdb.d
+    networks:
+      - snippetbox
+
+volumes:
+  mysql_data:
+
+networks:
+  snippetbox:
