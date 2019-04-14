@@ -10,6 +10,7 @@ require (
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
 	github.com/kr/pty v1.1.3 // indirect
 	github.com/ogier/pflag v0.0.1 // indirect
+	golang.org/x/crypto v0.0.0-20181009213950-7c1a557ab941
 	golang.org/x/sys v0.0.0-20190225065934-cc5685c2db12 // indirect
 	google.golang.org/appengine v1.4.0 // indirect
 )
