@@ -27,19 +27,24 @@ type application struct {
 
 func main() {
 	addr := flag.String("addr", ":4000", "HTTP network address")
-	dsn := flag.String("dsn", "web:pass@tcp(localhost)/snippetbox?parseTime=true", "MySQL data source name")
+	dbHost := flag.String("dbHost", "localhost", "Database Host")
+	dbUser:= flag.String("dbUser", "web", "Database Username")
+	dbPass := flag.String("dbPass", "pass", "Database Password")
+	db := flag.String("db", "snippetbox", "Database")
 	secret := flag.String("secret", "DKPhRX08$svyy^6RhUiZ#*f8k6KR9!E5", "Secret key")
 	flag.Parse()
+
+	dsn := *dbUser + ":" + *dbPass + "tcp(" + *dbHost + ")/" + *db + "?parseTime=true"
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
-	db, dbErr := openDB(*dsn)
+	dbConn, dbErr := openDB(dsn)
 	if dbErr != nil {
 		errorLog.Fatal(dbErr)
 	}
 
-	defer db.Close()
+	defer dbConn.Close()
 
 	templateCache, err := newTemplateCache("./ui/html/")
 	if err != nil {
@@ -54,8 +59,8 @@ func main() {
 		errorLog:      errorLog,
 		infoLog:       infoLog,
 		session:       session,
-		snippets:      &mysql.SnippetModel{DB: db},
-		users:         &mysql.UserModel{DB: db},
+		snippets:      &mysql.SnippetModel{DB: dbConn},
+		users:         &mysql.UserModel{DB: dbConn},
 		templateCache: templateCache,
 	}
 

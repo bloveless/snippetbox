@@ -10,7 +10,7 @@ build: dependencies
 	go build -o $(BIN_DIR)/snippetbox cmd/web/*.go
 
 run: build
-	$(BIN_DIR)/snippetbox -addr=":4000" -dsn="$(MYSQL_USER):$(MYSQL_PASSWORD)@tcp($(MYSQL_HOST))/$(MYSQL_DATABASE)?parseTime=true"
+	$(BIN_DIR)/snippetbox -addr=":4000" -dbUser="$(MYSQL_USER)" -dbPass="$(dbPass)" dbHost="$(MYSQL_HOST)" -db="$(MYSQL_DATABASE)"
 
 help: build
 	$(BIN_DIR)/snippetbox -help
