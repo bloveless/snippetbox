@@ -29,4 +29,4 @@ WORKDIR /home/appuser/app
 
 USER appuser
 
-CMD ["sh", "-c", "./bin/snippetbox -dbUser=\"$MYSQL_USER\" -dbPass=\"$dbPass\" -dbHost=\"$MYSQL_HOST\" -db=\"$MYSQL_DATABASE\""]
+CMD ["./bin/snippetbox -dbUser=\"$MYSQL_USER\" -dbPass=\"$dbPass\" -dbHost=\"$MYSQL_HOST\" -db=\"$MYSQL_DATABASE\""]
