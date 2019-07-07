@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: snippetbox-go-cluster-ip-service
+  namespace: snippetbox
+spec:
+  type: ClusterIP
+  selector:
+    component: snippetbox-go
+  ports:
+    - name: go
+      port: 4000
+      targetPort: 4000

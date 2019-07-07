@@ -4,7 +4,7 @@ services:
   server:
     build:
       context: .
-      dockerfile: build/docker/server/Dockerfile
+      dockerfile: deploy/docker/server/Dockerfile
       target: builder
     environment:
       MYSQL_HOST: "db"
@@ -30,7 +30,7 @@ services:
       - 3306:3306
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./build/docker/mysql/init:/docker-entrypoint-initdb.d
+      - ./deploy/docker/mysql/init:/docker-entrypoint-initdb.d
     networks:
       - snippetbox
 

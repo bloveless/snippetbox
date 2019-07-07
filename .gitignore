@@ -1,1 +1,2 @@
 .idea
+deploy/k8s/002-secret.yaml

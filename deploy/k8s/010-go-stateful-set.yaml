@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: snippetbox-go
+  namespace: snippetbox
+spec:
+  selector:
+    matchLabels:
+      component: snippetbox-go
+  serviceName: snippetbox-go
+  replicas: 1
+#  volumeClaimTemplates:
+#    - metadata:
+#        name: shared-files
+#      spec:
+#        accessModes:
+#          - ReadWriteOnce
+#        resources:
+#          requests:
+#            storage: 2Gi
+  template:
+    metadata:
+      labels:
+        component: snippetbox-go
+    spec:
+      securityContext:
+        fsGroup: 33
+      containers:
+        - name: go
+          image: gcr.io/brennon-loveless/snippetbox-go
+          ports:
+            - containerPort: 4000
+#          volumeMounts:
+#            - name: shared-files
+#              mountPath: /var/www/public/app
+#          livenessProbe:
+#            exec:
+#              command:
+#                - php-fpm-healthcheck
+#                - --listen-queue=50 # fails if there are more than 10 processes waiting in the fpm queue
+#            initialDelaySeconds: 0
+#            periodSeconds: 10
+#          readinessProbe:
+#            exec:
+#              command:
+#                - php-fpm-healthcheck # a simple ping since this means it's ready to handle traffic
+#            initialDelaySeconds: 1
+#            periodSeconds: 5
+          env:
+            - name: MYSQL_HOST
+              value: 10.66.192.3
+            - name: MYSQL_DATABASE
+              value: "snippetbox"
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: snippetbox
+                  key: db_username
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: snippetbox
+                  key: db_password
