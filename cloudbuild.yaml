@@ -8,9 +8,9 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'push', 'gcr.io/brennon-loveless/snippetbox-go:$SHORT_SHA' ]
 - name: 'gcr.io/cloud-builders/kubectl'
-  args: ['-n', 'javascript30', 'set', 'image', 'statefulset/snippetbox-go', 'go=gcr.io/brennon-loveless/snippetbox-go:$SHORT_SHA' ]
+  args: ['-n', 'snippetbox', 'set', 'image', 'statefulset/snippetbox-go', 'go=gcr.io/brennon-loveless/snippetbox-go:$SHORT_SHA' ]
 - name: 'gcr.io/cloud-builders/kubectl'
-  args: ['-n', 'javascript30', 'rollout', 'status', '-f', 'k8s/010-go-stateful-set.yaml' ]
+  args: ['-n', 'snippetbox', 'rollout', 'status', '-f', 'k8s/010-go-stateful-set.yaml' ]
 
 options:
   env:
