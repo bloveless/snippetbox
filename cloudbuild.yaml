@@ -1,6 +1,6 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'build', '-t', 'gcr.io/brennon-loveless/snippetbox-go:latest', '.' ]
+  args: [ 'build', '-t', 'gcr.io/brennon-loveless/snippetbox-go:latest', '-f', 'deploy/docker/server/Dockerfile', '.' ]
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'tag', 'gcr.io/brennon-loveless/snippetbox-go:latest', 'gcr.io/brennon-loveless/snippetbox-go:$SHORT_SHA' ]
 - name: 'gcr.io/cloud-builders/docker'
