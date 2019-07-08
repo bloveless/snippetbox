@@ -20,7 +20,7 @@ CMD ["make", "debug"]
 
 ####---- Production Image ----####
 
-FROM scratch as production
+FROM alpine as production
 
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /etc/group /etc/group
@@ -29,4 +29,4 @@ WORKDIR /home/appuser/app
 
 USER appuser
 
-CMD "./bin/snippetbox -dbUser=\"$MYSQL_USER\" -dbPass=\"$dbPass\" -dbHost=\"$MYSQL_HOST\" -db=\"$MYSQL_DATABASE\""
+CMD ["sh", "-c", "./bin/snippetbox -dbUser=$MYSQL_USER -dbPass=$MYSQL_PASSWORD -dbHost=$MYSQL_HOST -db=$MYSQL_DATABASE"]

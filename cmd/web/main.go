@@ -34,7 +34,7 @@ func main() {
 	secret := flag.String("secret", "DKPhRX08$svyy^6RhUiZ#*f8k6KR9!E5", "Secret key")
 	flag.Parse()
 
-	dsn := *dbUser + ":" + *dbPass + "tcp(" + *dbHost + ")/" + *db + "?parseTime=true"
+	dsn := *dbUser + ":" + *dbPass + "@tcp(" + *dbHost + ")/" + *db + "?parseTime=true"
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
