@@ -1,9 +1,9 @@
 version: 0.2
 
 phases:
-  runtime-versions:
-    docker: 18
   install:
+    runtime-versions:
+      docker: 18
     commands:
       - export ORIG_DIR=$(pwd)
       - cd /tmp
