@@ -161,6 +161,16 @@ Resources:
                 Action:
                   - 's3:*'
                 Effect: Allow
+        - PolicyName: SSM
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Resource:
+                  - 'arn:aws:ssm:us-west-2:391324319136:parameter/COREOS_KUBERNETES/UTIL_SA_TOKEN'
+                  - 'arn:aws:ssm:us-west-2:391324319136:parameter/COREOS_KUBERNETES/CA'
+                Action:
+                  - 'ssm:GetParameters'
+                Effect: Allow
   CodePipelineServiceRole:
     Type: 'AWS::IAM::Role'
     Properties:

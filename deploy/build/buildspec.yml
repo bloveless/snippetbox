@@ -15,7 +15,6 @@ phases:
       - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
       - chmod +x ./kubectl
       - mv ./kubectl /usr/local/bin/kubectl
-      - kubectl version --client=true
       - cd $ORIG_DIR
       - echo "69.169.138.37 coreos-master" >> /etc/hosts
       - mkdir ~/.kube
@@ -27,6 +26,7 @@ phases:
       - kubectl config set-credentials util-sa --token $COREOS_KUBERNETES_UTIL_SA_TOKEN
       - kubectl config set-context coreos-master --cluster=coreos-master --user=util-sa
       - kubectl config use-context coreos-master
+      - kubectl version
   build:
     commands:
       - docker build . -t 391324319136.dkr.ecr.us-west-2.amazonaws.com/snippetbox-server:$(date +%s%N) -f deploy/docker/server/Dockerfile
