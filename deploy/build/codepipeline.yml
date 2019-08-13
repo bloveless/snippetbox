@@ -71,9 +71,10 @@ Resources:
     Properties:
       Description: Build your project
       ServiceRole: !Ref CodeBuildRole
+      Artifacts:
+        Type: CODEPIPELINE
       Source:
-        Type: GITHUB
-        BuildSpec: deploy/build/buildspec.yml
+        Type: CODEPIPELINE
       Environment:
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_SMALL
@@ -155,6 +156,12 @@ Resources:
               - Resource: '*'
                 Action:
                   - 'iam:PassRole'
+                Effect: Allow
+              - Resource:
+                  - 'arn:aws:s3:::snippetboxpipeline-artifactstorebucket-*'
+                  - 'arn:aws:s3:::snippetboxpipeline-artifactstorebucket-*/*'
+                Action:
+                  - 's3:*'
                 Effect: Allow
 #  Pipeline:
 #    Type: AWS::CodePipeline::Pipeline
