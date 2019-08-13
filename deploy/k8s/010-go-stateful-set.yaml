@@ -26,7 +26,7 @@ spec:
       securityContext:
         fsGroup: 33
       containers:
-        - name: go
+        - name: server
           image: 391324319136.dkr.ecr.us-west-2.amazonaws.com/snippetbox-server
           ports:
             - containerPort: 4000
