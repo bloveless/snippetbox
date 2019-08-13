@@ -35,4 +35,4 @@ phases:
       - docker push 391324319136.dkr.ecr.us-west-2.amazonaws.com/snippetbox-server:$BUILD_TIME
   post_build:
     commands:
-      - kubectl -n snippetbox set image statefulset/snippetbox-go go=391324319136.dkr.ecr.us-west-2.amazonaws.com/snippetbox-server:$BUILD_TIME
+      - kubectl -n snippetbox set image statefulset/snippetbox-server server=391324319136.dkr.ecr.us-west-2.amazonaws.com/snippetbox-server:$BUILD_TIME

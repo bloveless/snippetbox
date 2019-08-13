@@ -19,6 +19,6 @@ spec:
         paths:
           - path: /?(.*)
             backend:
-              serviceName: snippetbox-go-cluster-ip-service
+              serviceName: snippetbox-server-cluster-ip-service
               servicePort: 4000
 

@@ -6,7 +6,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    component: snippetbox-go
+    component: snippetbox-server
   ports:
     - name: go
       port: 4000

@@ -1,13 +1,13 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: snippetbox-go
+  name: snippetbox-server
   namespace: snippetbox
 spec:
   selector:
     matchLabels:
-      component: snippetbox-go
-  serviceName: snippetbox-go
+      component: snippetbox-server
+  serviceName: snippetbox-server
   replicas: 1
 #  volumeClaimTemplates:
 #    - metadata:
@@ -21,7 +21,7 @@ spec:
   template:
     metadata:
       labels:
-        component: snippetbox-go
+        component: snippetbox-server
     spec:
       securityContext:
         fsGroup: 33
