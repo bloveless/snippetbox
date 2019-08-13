@@ -172,6 +172,22 @@ Resources:
                 Action:
                   - 'ssm:GetParameters'
                 Effect: Allow
+        - PolicyName: ECR
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Resource: '*'
+                Action:
+                  - 'ecr:GetAuthorizationToken'
+                Effect: Allow
+              - Resource: !Sub 'arn:aws:ecr:${AWS::Region}:${AWS::AccountId}:repository/snippetbox-server'
+                Action:
+                  - 'ecr:InitiateLayerUpload'
+                  - 'ecr:UploadLayerPart'
+                  - 'ecr:CompleteLayerUpload'
+                  - 'ecr:BatchCheckLayerAvailability'
+                  - 'ecr:PutImage'
+                Effect: Allow
   CodePipelineServiceRole:
     Type: 'AWS::IAM::Role'
     Properties:
