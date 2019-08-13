@@ -27,6 +27,10 @@ phases:
       - kubectl config set-context coreos-master --cluster=coreos-master --user=util-sa
       - kubectl config use-context coreos-master
       - kubectl version
+      - $(aws ecr get-login --no-include-email --region us-west-2)
   build:
     commands:
-      - docker build . -t 391324319136.dkr.ecr.us-west-2.amazonaws.com/snippetbox-server:$(date +%s%N) -f deploy/docker/server/Dockerfile
+      - export BUILD_TIME=$(date +%s%3N)
+      - docker build . -t 391324319136.dkr.ecr.us-west-2.amazonaws.com/snippetbox-server:$BUILD_TIME -f deploy/docker/server/Dockerfile
+      - docker push 391324319136.dkr.ecr.us-west-2.amazonaws.com/snippetbox-server:$BUILD_TIME
+
