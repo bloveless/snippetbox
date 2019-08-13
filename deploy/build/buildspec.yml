@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     commands:
-      - apt-get install curl
+      - yum install -y curl
       - export ORIG_DIR=$(pwd)
       - cd /tmp
       - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
