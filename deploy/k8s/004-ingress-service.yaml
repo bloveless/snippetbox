@@ -21,3 +21,4 @@ spec:
             backend:
               serviceName: snippetbox-go-cluster-ip-service
               servicePort: 4000
+

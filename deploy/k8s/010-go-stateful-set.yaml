@@ -27,7 +27,7 @@ spec:
         fsGroup: 33
       containers:
         - name: go
-          image: gcr.io/brennon-loveless/snippetbox-go
+          image: 391324319136.dkr.ecr.us-west-2.amazonaws.com/snippetbox-server
           ports:
             - containerPort: 4000
 #          volumeMounts:
@@ -48,7 +48,7 @@ spec:
 #            periodSeconds: 5
           env:
             - name: MYSQL_HOST
-              value: 10.66.192.3
+              value: 10.0.1.248
             - name: MYSQL_DATABASE
               value: "snippetbox"
             - name: MYSQL_USER
