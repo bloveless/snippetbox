@@ -22,6 +22,7 @@ phases:
     commands:
       - kubectl config set-cluster coreos-master --server=https://coreos-master:6443
       - kubectl config set-cluster coreos-master --certificate-authority=/tmp/coreos_kubernetes_ca.crt
+      - kubectl config set-cluster coreos-master --insecure-skip-tls-verify=true
       - kubectl config set-credentials util-sa --token $COREOS_KUBERNETES_UTIL_SA_TOKEN
       - kubectl config set-context coreos-master --cluster=coreos-master --user=util-sa
       - kubectl config use-context coreos-master
