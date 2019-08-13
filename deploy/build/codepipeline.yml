@@ -66,7 +66,7 @@ Resources:
         - Pipeline
         - Version
       RegisterWithThirdParty: true
-  CodeBuildProject:
+  SnippetboxCodeBuildProject:
     Type: AWS::CodeBuild::Project
     Properties:
       Description: Build your project
@@ -75,10 +75,11 @@ Resources:
         Type: CODEPIPELINE
       Source:
         Type: CODEPIPELINE
+        BuildSpec: deploy/build/buildspec.yml
       Environment:
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_SMALL
-        Image: aws/codebuild/docker:18
+        Image: docker:18
         EnvironmentVariables:
           - Name: CURRENT_ENVIRONMENT
             Type: PLAINTEXT
@@ -120,7 +121,7 @@ Resources:
               InputArtifacts:
                 - Name: SourceOutput
               Configuration:
-                ProjectName: !Ref CodeBuildProject
+                ProjectName: !Ref SnippetboxCodeBuildProject
               RunOrder: 1
       ArtifactStore:
         Type: S3
@@ -136,6 +137,30 @@ Resources:
               Service:
                 - codebuild.amazonaws.com
             Action: 'sts:AssumeRole'
+      Path: /
+      Policies:
+        - PolicyName: CloudWatch
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Resource: '*'
+                Action:
+                  - 'cloudwatch:*'
+                Effect: Allow
+              - Resource: !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/SnippetboxCodeBuildProject*:log-stream:*'
+                Action:
+                  - 'logs:*'
+                Effect: Allow
+        - PolicyName: S3
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Resource:
+                  - 'arn:aws:s3:::snippetboxpipeline-artifactstorebucket-*'
+                  - 'arn:aws:s3:::snippetboxpipeline-artifactstorebucket-*/*'
+                Action:
+                  - 's3:*'
+                Effect: Allow
   CodePipelineServiceRole:
     Type: 'AWS::IAM::Role'
     Properties:
@@ -149,7 +174,7 @@ Resources:
             Action: 'sts:AssumeRole'
       Path: /
       Policies:
-        - PolicyName: AWS-CodePipeline-Service
+        - PolicyName: IAM
           PolicyDocument:
             Version: 2012-10-17
             Statement:
@@ -157,11 +182,35 @@ Resources:
                 Action:
                   - 'iam:PassRole'
                 Effect: Allow
+        - PolicyName: S3
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
               - Resource:
                   - 'arn:aws:s3:::snippetboxpipeline-artifactstorebucket-*'
                   - 'arn:aws:s3:::snippetboxpipeline-artifactstorebucket-*/*'
                 Action:
                   - 's3:*'
+                Effect: Allow
+        - PolicyName: CodeBuild
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Resource: !Sub 'arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/SnippetboxCodeBuildProject*'
+                Action:
+                  - 'codebuild:*'
+                Effect: Allow
+        - PolicyName: CloudWatch
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Resource: '*'
+                Action:
+                  - 'cloudwatch:*'
+                Effect: Allow
+              - Resource: !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/SnippetboxCodeBuildProject*:log-stream:*'
+                Action:
+                  - 'logs:*'
                 Effect: Allow
 #  Pipeline:
 #    Type: AWS::CodePipeline::Pipeline
