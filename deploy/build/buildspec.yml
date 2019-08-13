@@ -3,7 +3,14 @@ version: 0.2
 phases:
   install:
     commands:
-      - echo "Install"
+      - ORIG_DIR = $(pwd)
+      - cd /tmp
+      - curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+      - chmod +x ./kubectl
+      - sudo mv ./kubectl /usr/local/bin/kubectl
+      - kubectl version
+      - cd $ORIG_DIR
+      - pwd
   build:
     commands:
-      - echo "Build"
+      - docker build . -t 391324319136.dkr.ecr.us-west-2.amazonaws.com/snippetbox-server:$(date +%s%N) -f deploy/docker/server/Dockerfile
