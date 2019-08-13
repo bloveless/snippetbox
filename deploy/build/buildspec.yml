@@ -20,7 +20,7 @@ phases:
       - echo "69.169.138.37 coreos-master" >> /etc/hosts
       - mkdir ~/.kube
       - echo $COREOS_KUBERNETES_CA > ~/.kube/ca.crt
-  pre-build:
+  pre_build:
     commands:
       - kubectl config set-cluster coreos-master --server=https://coreos-master:6443
       - kubectl config set-cluster coreos-master --certificate-authority=~/.kube/ca.crt
