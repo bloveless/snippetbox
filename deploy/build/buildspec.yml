@@ -1,5 +1,10 @@
 version: 0.2
 
+env:
+  parameter-store:
+    COREOS_KUBERNETES_CA: "/COREOS_KUBERNETES/CA"
+    COREOS_KUBERNETES_UTIL_SA_TOKEN: "/COREOS_KUBERNETES/UTIL_SA_TOKEN"
+
 phases:
   install:
     runtime-versions:
@@ -12,7 +17,16 @@ phases:
       - mv ./kubectl /usr/local/bin/kubectl
       - kubectl version --client=true
       - cd $ORIG_DIR
-      - pwd
+      - echo "69.169.138.37 coreos-master" >> /etc/hosts
+      - mkdir ~/.kube
+      - echo $COREOS_KUBERNETES_CA > ~/.kube/ca.crt
+  pre-build:
+    commands:
+      - kubectl config set-cluster coreos-master --server=https://coreos-master:6443
+      - kubectl config set-cluster coreos-master --certificate-authority=~/.kube/ca.crt
+      - kubectl config set-credentials util-sa --token $COREOS_KUBERNETES_UTIL_SA_TOKEN
+      - kubectl config set-context coreos-master --cluster=coreos-master --user=util-sa
+      - kubectl config use-context coreos-master
   build:
     commands:
       - docker build . -t 391324319136.dkr.ecr.us-west-2.amazonaws.com/snippetbox-server:$(date +%s%N) -f deploy/docker/server/Dockerfile
