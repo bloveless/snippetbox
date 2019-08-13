@@ -17,12 +17,12 @@ phases:
       - mv ./kubectl /usr/local/bin/kubectl
       - cd $ORIG_DIR
       - echo "69.169.138.37 coreos-master" >> /etc/hosts
-      - mkdir ~/.kube
-      - echo $COREOS_KUBERNETES_CA > ~/.kube/ca.crt
+      - mkdir /tmp/.kube
+      - echo $COREOS_KUBERNETES_CA > /tmp/.kube/ca.crt
   pre_build:
     commands:
       - kubectl config set-cluster coreos-master --server=https://coreos-master:6443
-      - kubectl config set-cluster coreos-master --certificate-authority=~/.kube/ca.crt
+      - kubectl config set-cluster coreos-master --certificate-authority=/tmp/.kube/ca.crt
       - kubectl config set-credentials util-sa --token $COREOS_KUBERNETES_UTIL_SA_TOKEN
       - kubectl config set-context coreos-master --cluster=coreos-master --user=util-sa
       - kubectl config use-context coreos-master
