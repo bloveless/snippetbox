@@ -239,12 +239,4 @@ Resources:
                 Action:
                   - 'logs:*'
                 Effect: Allow
-#  Pipeline:
-#    Type: AWS::CodePipeline::Pipeline
-#    Properties:
-#      ArtifactStore:
-#        ArtifactStore
-#      RestartExecutionOnUpdate: True
-#      RoleArn: String
-#      Stages:
-#        - StageDeclaration
+
