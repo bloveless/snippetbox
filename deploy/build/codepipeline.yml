@@ -139,9 +139,9 @@ Resources:
           - aws.codepipeline
         detail-type:
           - CodePipeline Pipeline Execution State Change
-        resources:
-          - !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:pipeline:${Pipeline}"
         detail:
+          pipeline:
+            - !Ref Pipeline
           state:
             - STARTED
             - FAILED
