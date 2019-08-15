@@ -3,6 +3,9 @@ Parameters:
     Description: GitHub branch name
     Type: String
     Default: master
+  EmailAddress:
+    Type: String
+    Description: Email address to add to the notification topic by default.
   RepositoryName:
     Description: GitHub repository name
     Type: String
@@ -127,6 +130,53 @@ Resources:
       ArtifactStore:
         Type: S3
         Location: !Ref ArtifactStoreBucket
+  EventRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: "EventRule"
+      EventPattern:
+        source:
+          - aws.codepipeline
+        detail-type:
+          - CodePipeline Pipeline Execution State Change
+        resources:
+          - !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:pipeline:${Pipeline}"
+        detail:
+          state:
+            - STARTED
+            - FAILED
+            - SUCCEEDED
+      State: ENABLED
+      Targets:
+        - Arn:
+            Ref: SNSTopic
+          Id: PipelineNotificationTopic
+          InputTransformer:
+            InputTemplate: '"The Pipeline <pipeline> has <state>. Go to https://us-west-2.console.aws.amazon.com/codesuite/codepipeline/pipelines/<pipeline>/view" '
+            InputPathsMap:
+              pipeline: "$.detail.pipeline"
+              state: "$.detail.state"
+  SNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      Subscription:
+        - Endpoint:
+            Ref: EmailAddress
+          Protocol: email
+  SNSTopicPolicy:
+    Type: AWS::SNS::TopicPolicy
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: SnsTopicPolicy
+            Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Action: sns:Publish
+            Resource: !Ref SNSTopic
+      Topics:
+        - !Ref SNSTopic
   CodeBuildRole:
     Type: 'AWS::IAM::Role'
     Properties:
