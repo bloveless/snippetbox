@@ -217,8 +217,8 @@ Resources:
             Version: 2012-10-17
             Statement:
               - Resource:
-                  - 'arn:aws:ssm:us-west-2:391324319136:parameter/COREOS_KUBERNETES/UTIL_SA_TOKEN'
-                  - 'arn:aws:ssm:us-west-2:391324319136:parameter/COREOS_KUBERNETES/CA'
+                  - 'arn:aws:ssm:us-west-2:391324319136:parameter/DEMON_KUBERNETES/UTIL_SA_TOKEN'
+                  - 'arn:aws:ssm:us-west-2:391324319136:parameter/DEMON_KUBERNETES/CA'
                 Action:
                   - 'ssm:GetParameters'
                 Effect: Allow

@@ -2,8 +2,8 @@ version: 0.2
 
 env:
   parameter-store:
-    COREOS_KUBERNETES_CA: "/COREOS_KUBERNETES/CA"
-    COREOS_KUBERNETES_UTIL_SA_TOKEN: "/COREOS_KUBERNETES/UTIL_SA_TOKEN"
+    DEMON_KUBERNETES_CA: "/DEMON_KUBERNETES/CA"
+    DEMON_KUBERNETES_UTIL_SA_TOKEN: "/DEMON_KUBERNETES/UTIL_SA_TOKEN"
 
 phases:
   install:
@@ -16,16 +16,16 @@ phases:
       - chmod +x ./kubectl
       - mv ./kubectl /usr/local/bin/kubectl
       - cd $ORIG_DIR
-      - echo "69.169.138.37 coreos-master" >> /etc/hosts
-      - echo $COREOS_KUBERNETES_CA > /tmp/coreos_kubernetes_ca.crt
+      - echo "69.169.138.37 demon-master" >> /etc/hosts
+      - echo $DEMON_KUBERNETES_CA > /tmp/demon_kubernetes_ca.crt
   pre_build:
     commands:
-      - kubectl config set-cluster coreos-master --server=https://coreos-master:6443
-      - kubectl config set-cluster coreos-master --certificate-authority=/tmp/coreos_kubernetes_ca.crt
-      - kubectl config set-cluster coreos-master --insecure-skip-tls-verify=true
-      - kubectl config set-credentials util-sa --token $COREOS_KUBERNETES_UTIL_SA_TOKEN
-      - kubectl config set-context coreos-master --cluster=coreos-master --user=util-sa
-      - kubectl config use-context coreos-master
+      - kubectl config set-cluster demon-master --server=https://demon-master:6443
+      - kubectl config set-cluster demon-master --certificate-authority=/tmp/demon_kubernetes_ca.crt
+      - kubectl config set-cluster demon-master --insecure-skip-tls-verify=true
+      - kubectl config set-credentials util-sa --token $DEMON_KUBERNETES_UTIL_SA_TOKEN
+      - kubectl config set-context demon-master --cluster=demon-master --user=util-sa
+      - kubectl config use-context demon-master
       - kubectl version
       - $(aws ecr get-login --no-include-email --region us-west-2)
   build:
