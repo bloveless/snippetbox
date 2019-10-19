@@ -6,11 +6,7 @@ services:
       context: .
       dockerfile: deploy/docker/server/Dockerfile
       target: builder
-    environment:
-      MYSQL_HOST: "db"
-      MYSQL_DATABASE: "snippetbox"
-      MYSQL_USER: "snippetbox"
-      MYSQL_PASSWORD: "2i2XfaLV4u!P1nadznz"
+    command: ["modd", "-f", "modd.conf"]
     ports:
       - 4000:4000
     volumes:
@@ -19,8 +15,9 @@ services:
       - snippetbox
     depends_on:
       - db
+
   db:
-    image: mysql:8.0
+    image: mariadb:10.4.8
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
       MYSQL_DATABASE: "snippetbox"

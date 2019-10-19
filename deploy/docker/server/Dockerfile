@@ -14,9 +14,13 @@ WORKDIR /home/appuser/app
 
 USER appuser
 
-RUN make
+RUN go get -u github.com/go-delve/delve/cmd/dlv \
+    && go get -u github.com/cortesi/modd/cmd/modd
 
-CMD ["make", "debug"]
+RUN go mod download \
+    && go build -o ./bin/snippetbox cmd/web/*.go
+
+CMD ["./bin/snippetbox"]
 
 ####---- Production Image ----####
 
